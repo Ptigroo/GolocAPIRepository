@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GolocAPI", "..\GolocAPI\GolocAPI.csproj", "{BE2C983C-E6D7-44C5-8C64-6C14928E2499}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GolocAPI", "GolocAPI\GolocAPI.csproj", "{8D49FCA9-7B82-4511-81EC-E40E37E0F0CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GolocSharedLibrary", "..\GolocSharedLibrary\GolocSharedLibrary.csproj", "{DC009D4C-9F3F-420F-9476-4BC81F94A2B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GolocSharedLibrary", "GolocSharedLibrary\GolocSharedLibrary.csproj", "{EDABBAC5-CAD1-4F69-A78A-B43AF2087425}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BE2C983C-E6D7-44C5-8C64-6C14928E2499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE2C983C-E6D7-44C5-8C64-6C14928E2499}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE2C983C-E6D7-44C5-8C64-6C14928E2499}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE2C983C-E6D7-44C5-8C64-6C14928E2499}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC009D4C-9F3F-420F-9476-4BC81F94A2B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC009D4C-9F3F-420F-9476-4BC81F94A2B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC009D4C-9F3F-420F-9476-4BC81F94A2B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC009D4C-9F3F-420F-9476-4BC81F94A2B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D49FCA9-7B82-4511-81EC-E40E37E0F0CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D49FCA9-7B82-4511-81EC-E40E37E0F0CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D49FCA9-7B82-4511-81EC-E40E37E0F0CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D49FCA9-7B82-4511-81EC-E40E37E0F0CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDABBAC5-CAD1-4F69-A78A-B43AF2087425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDABBAC5-CAD1-4F69-A78A-B43AF2087425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDABBAC5-CAD1-4F69-A78A-B43AF2087425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDABBAC5-CAD1-4F69-A78A-B43AF2087425}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
