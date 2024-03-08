@@ -8,10 +8,10 @@ namespace GolocAPI.Entities
         public string Description { get; set; }
         public List<string> Images { get; set; }
         public double PricePerDay { get; set; }
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         public ProductCategory Category { get; set; }
 
-        public Guid OwnerId { get; set; }
+        public string OwnerId { get; set; }
         public User Owner { get; set; }
 
     }

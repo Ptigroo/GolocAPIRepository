@@ -12,29 +12,27 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GolocAPI.Migrations
 {
     [DbContext(typeof(GolocDbContext))]
-    [Migration("20231202150455_removerPtoductOwner")]
-    partial class removerPtoductOwner
+    [Migration("20240308130444_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("GolocAPI.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -54,28 +52,27 @@ namespace GolocAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<double>("PricePerDay")
                         .HasColumnType("float");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Products");
                 });
 
             modelBuilder.Entity("GolocAPI.Entities.ProductCategory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -194,13 +191,13 @@ namespace GolocAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "672e1f8f-5270-4988-bf70-7e49208d9001",
+                            Id = "8f40d1b6-9d30-4e30-88f6-d8dfd0dabc80",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "e91e95a1-73a5-4e2d-980c-9376878be3ee",
+                            Id = "93e87763-4c70-4b02-be96-6f64792594c8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -320,11 +317,15 @@ namespace GolocAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GolocAPI.Entities.User", null)
+                    b.HasOne("GolocAPI.Entities.User", "Owner")
                         .WithMany("Products")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

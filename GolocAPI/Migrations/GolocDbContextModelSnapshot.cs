@@ -17,21 +17,19 @@ namespace GolocAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("GolocAPI.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -51,10 +49,8 @@ namespace GolocAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("OwnerId1")
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("PricePerDay")
@@ -64,18 +60,16 @@ namespace GolocAPI.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("OwnerId1");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Products");
                 });
 
             modelBuilder.Entity("GolocAPI.Entities.ProductCategory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -194,13 +188,13 @@ namespace GolocAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "910286f0-5e52-4710-8c54-c82bfa54db19",
+                            Id = "8f40d1b6-9d30-4e30-88f6-d8dfd0dabc80",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "eb1d526d-5396-4b23-8bf7-66cb9f7547c4",
+                            Id = "93e87763-4c70-4b02-be96-6f64792594c8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -322,7 +316,9 @@ namespace GolocAPI.Migrations
 
                     b.HasOne("GolocAPI.Entities.User", "Owner")
                         .WithMany("Products")
-                        .HasForeignKey("OwnerId1");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 
