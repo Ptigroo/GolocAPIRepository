@@ -5,5 +5,6 @@ namespace GolocAPI.Entities
     public class User : IdentityUser
     {
         public string Pseudo { get; set; }
+        public List<Product> Products { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GolocAPI.Migrations
 {
     [DbContext(typeof(GolocDbContext))]
-    partial class GolocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231202150455_removerPtoductOwner")]
+    partial class removerPtoductOwner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,20 +54,17 @@ namespace GolocAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("OwnerId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<double>("PricePerDay")
                         .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("OwnerId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -194,13 +194,13 @@ namespace GolocAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "910286f0-5e52-4710-8c54-c82bfa54db19",
+                            Id = "672e1f8f-5270-4988-bf70-7e49208d9001",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "eb1d526d-5396-4b23-8bf7-66cb9f7547c4",
+                            Id = "e91e95a1-73a5-4e2d-980c-9376878be3ee",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -320,13 +320,11 @@ namespace GolocAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GolocAPI.Entities.User", "Owner")
+                    b.HasOne("GolocAPI.Entities.User", null)
                         .WithMany("Products")
-                        .HasForeignKey("OwnerId1");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

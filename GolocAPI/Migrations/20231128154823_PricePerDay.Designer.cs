@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GolocAPI.Migrations
 {
     [DbContext(typeof(GolocDbContext))]
-    partial class GolocDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231128154823_PricePerDay")]
+    partial class PricePerDay
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,10 +54,11 @@ namespace GolocAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("OwnerId1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("PricePerDay")
@@ -66,7 +70,7 @@ namespace GolocAPI.Migrations
 
                     b.HasIndex("OwnerId1");
 
-                    b.ToTable("Products");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("GolocAPI.Entities.ProductCategory", b =>
@@ -93,7 +97,7 @@ namespace GolocAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategory");
                 });
 
             modelBuilder.Entity("GolocAPI.Entities.User", b =>
@@ -194,13 +198,13 @@ namespace GolocAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "910286f0-5e52-4710-8c54-c82bfa54db19",
+                            Id = "559053ea-e7ff-4f15-883a-1eb1808f1813",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "eb1d526d-5396-4b23-8bf7-66cb9f7547c4",
+                            Id = "f4786709-8cbb-4722-ae71-1989b8324333",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -322,7 +326,9 @@ namespace GolocAPI.Migrations
 
                     b.HasOne("GolocAPI.Entities.User", "Owner")
                         .WithMany("Products")
-                        .HasForeignKey("OwnerId1");
+                        .HasForeignKey("OwnerId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 

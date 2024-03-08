@@ -11,6 +11,8 @@ namespace Infrastructure
     {
         private readonly ILogger<GolocDbContext> _logger;
         public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
         public GolocDbContext(DbContextOptions<GolocDbContext> options,
         ILogger<GolocDbContext> logger)
          : base(options)

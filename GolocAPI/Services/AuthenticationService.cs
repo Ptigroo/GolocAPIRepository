@@ -1,18 +1,15 @@
 ﻿using AutoMapper;
 using GolocAPI.Entities;
-using GolocAPI.Infrastructure.Repositories;
 using GolocSharedLibrary.Models;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Server.IIS.Core;
-using Microsoft.Extensions.Options;
-using System.Text;
 
 namespace GolocAPI.Services
 {
     public interface IAuthenticationService
     {
-        Task<string> Login(LoginModel login);
-        Task<string> Register(RegisterModel register);
+        Task<TokenModel> Login(LoginModel login);
+        Task<TokenModel> Register(RegisterModel register);
         Task<List<UserModel>> ListUsers();
     }
     public class AuthenticationService : IAuthenticationService
@@ -29,7 +26,7 @@ namespace GolocAPI.Services
             this._unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
-        public async Task<string> Login(LoginModel login)
+        public async Task<TokenModel> Login(LoginModel login)
         {
             var user = await _unitOfWork.UserRepository.Login(login);
             if (user == null)
@@ -40,9 +37,9 @@ namespace GolocAPI.Services
             {
                 throw new Exception("Credentials incorrect");
             }
-            return await _tokenService.GenerateToken(user);
+            return new TokenModel{ Token = await _tokenService.GenerateToken(user) };
         }
-        public async Task<string> Register(RegisterModel register)
+        public async Task<TokenModel> Register(RegisterModel register)
         {
             var user = new User
             {
@@ -50,7 +47,7 @@ namespace GolocAPI.Services
                 UserName = register.Login,
                 Email = register.Login,
             };
-            await _unitOfWork.UserRepository.Register(user, register.Password);
+             await _unitOfWork.UserRepository.Register(user, register.Password);
 
             return await Login(new LoginModel
             {
@@ -60,8 +57,7 @@ namespace GolocAPI.Services
         }
         public async Task<List<UserModel>> ListUsers()
         {
-            
-            return (await _unitOfWork.UserRepository.GetAll()).Select(u => mapper.Map<UserModel>(u)).ToList();
+            return _unitOfWork.UserRepository.GetAll().Select(u => mapper.Map<UserModel>(u)).ToList();
 
         }
     }

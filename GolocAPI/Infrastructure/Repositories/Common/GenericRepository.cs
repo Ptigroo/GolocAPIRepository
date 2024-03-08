@@ -5,7 +5,7 @@ using GolocAPI.Infrastructure.Repositories.Common;
 
 namespace Infrastructure.Repositories.Common
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly GolocDbContext golocDbContext;
 
@@ -15,6 +15,7 @@ namespace Infrastructure.Repositories.Common
         }
         public virtual async Task Create(T entity)
         {
+            entity.CreationDate = DateTime.Now;
                await golocDbContext.AddAsync(entity);
         }
 
@@ -30,9 +31,10 @@ namespace Infrastructure.Repositories.Common
 
         public virtual async Task Update(T entity)
         {
+            entity.ModifiedDate = DateTime.Now;
             golocDbContext.Update(entity);
         }
-        public virtual async Task<IEnumerable<T>> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return golocDbContext.Set<T>().AsEnumerable();
         }

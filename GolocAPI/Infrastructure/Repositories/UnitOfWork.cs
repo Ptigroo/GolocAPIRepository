@@ -1,19 +1,23 @@
 ﻿using GolocAPI.Entities;
 using GolocAPI.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
+    public interface IUnitOfWork : IDisposable
+    {
+        IUserRepository UserRepository { get; }
+        IProductRepository ProductRepository { get; }
+        IProductCategoryRepository ProductCategoryRepository { get; }
+        Task Save();
+    }
     internal class UnitOfWork : IUnitOfWork
     {
         private readonly GolocDbContext golocDbContext;
         private readonly UserManager<User> _manager;
         private IUserRepository userRepository;
+        private IProductRepository productRepository;
+        private IProductCategoryRepository productCategoryRepository;
 
         public UnitOfWork(GolocDbContext golocDbContext, UserManager<User> manager)
         {
@@ -21,6 +25,8 @@ namespace Infrastructure.Repositories
             _manager = manager;
         }
         public IUserRepository UserRepository => userRepository ??= new UserRepository(_manager ,golocDbContext);
+        public IProductRepository ProductRepository => productRepository ??= new ProductRepository(golocDbContext);
+        public IProductCategoryRepository ProductCategoryRepository => productCategoryRepository ??= new ProductCategoryRepository(golocDbContext);
 
         public void Dispose()
         {
