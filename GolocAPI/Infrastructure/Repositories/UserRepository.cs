@@ -1,5 +1,5 @@
 ﻿using GolocAPI.Entities;
-using GolocSharedLibrary.Models;
+using GolocAPI.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Repositories

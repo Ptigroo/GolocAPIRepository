@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using GolocAPI.Entities;
-using GolocSharedLibrary.Models;
+using GolocAPI.Models;
 
 namespace GolocAPI
 {
@@ -13,6 +13,23 @@ namespace GolocAPI
             CreateMap<Product, ProductPostModel>().ReverseMap();
             CreateMap<ProductCategory, ProductCategoryModel>().ReverseMap();
             CreateMap<ProductCategory, ProductCategoryPostModel>().ReverseMap();
+            CreateMap<Rent, RentModel>().AfterMap((rent, model) => { model.RenterName = rent.Renter.Pseudo;
+                model.ProductName = rent.Product.Name;
+                model.OwnerName = rent.Product.Owner.Pseudo;
+                model.OwnerId = rent.Product.Owner.Id;
+                if (rent.Messages != null)
+                {
+                    var modelMessages = new List<ChatMessageModel>();
+                    foreach (var message in rent.Messages.OrderBy(message => message.CreationDate))
+                    {
+                        modelMessages.Add(new ChatMessageModel() { Message = message.Message, SenderId = message.SenderId });
+                    }
+                    model.ChatMessages = modelMessages;
+
+                }
+            });
+            CreateMap<RentPostModel, Rent>();
+            CreateMap<ChatMessageModel, ChatMessage>().ReverseMap();
         }
     }
 }

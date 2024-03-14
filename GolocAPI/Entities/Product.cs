@@ -13,6 +13,7 @@ namespace GolocAPI.Entities
 
         public string OwnerId { get; set; }
         public User Owner { get; set; }
+        public List<Rent> Rents { get; set; }
 
     }
 }

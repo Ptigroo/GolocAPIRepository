@@ -1,5 +1,4 @@
 ﻿using GolocAPI.Entities;
-using GolocAPI.Infrastructure.Repositories.Common;
 using Infrastructure.Repositories.Common;
 using Infrastructure;
 

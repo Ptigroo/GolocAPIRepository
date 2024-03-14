@@ -6,5 +6,6 @@ namespace GolocAPI.Entities
     {
         public string Pseudo { get; set; }
         public List<Product> Products { get; set; }
+        public List<ChatMessage> ChatMessgages { get; set; }
     }
 }

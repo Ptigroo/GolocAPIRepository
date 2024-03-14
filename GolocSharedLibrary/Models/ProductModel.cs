@@ -15,7 +15,7 @@ namespace GolocSharedLibrary.Models
         public bool IsDemand { get; set; }
         public double Lattitude { get; set; }
         public double Longitude { get; set; }
-        public List<ProductCategoryModel> CategoriesView { get; set; }
+        public Guid CategoryId{ get; set; }
         public string City { get; set; }
         public DateTime? DateAdded { get; set; }
         public DateTime? StartAvailibility { get; set; }

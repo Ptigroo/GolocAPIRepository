@@ -1,5 +1,4 @@
 ﻿using GolocAPI.Entities;
-using GolocAPI.Infrastructure.Repositories.Common;
 using Infrastructure;
 using Infrastructure.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +18,10 @@ namespace GolocAPI.Infrastructure.Repositories
         public override IEnumerable<Product> GetAll()
         {
             return golocDbContext.Products.Include(product => product.Owner).AsEnumerable();
+        }
+        public override async Task<Product> GetById(Guid id)
+        {
+            return await golocDbContext.Products.Include(product => product.Owner).FirstAsync(product => product.Id == id);
         }
 
     }

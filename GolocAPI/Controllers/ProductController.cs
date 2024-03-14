@@ -1,5 +1,5 @@
 ﻿using GolocAPI.Services;
-using GolocSharedLibrary.Models;
+using GolocAPI.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,22 +20,20 @@ namespace GolocAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductModel>> Add([FromBody] ProductPostModel product)
         {
-            try
-            {
                 product.OwnerId = Guid.Parse(User.Identity.GetUserId());
                 await productService.AddProduct(product);
                 return new ProductModel  {};
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductModel>> Get(Guid id)
+        {
+                return await productService.GetProduct(id);
         }
 
         [HttpGet("list")]
-        public async Task<ActionResult<List<ProductModel>>> GetAll()
+        public ActionResult<List<ProductModel>> GetAll()
         {
-            return Ok( await productService.GetProducts());
+            return Ok(productService.GetProducts());
         }
 
     }

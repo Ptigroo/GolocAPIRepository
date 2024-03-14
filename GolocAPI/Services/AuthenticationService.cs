@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using GolocAPI.Entities;
-using GolocSharedLibrary.Models;
+using GolocAPI.Models;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 
@@ -10,7 +10,7 @@ namespace GolocAPI.Services
     {
         Task<TokenModel> Login(LoginModel login);
         Task<TokenModel> Register(RegisterModel register);
-        Task<List<UserModel>> ListUsers();
+        List<UserModel> ListUsers();
     }
     public class AuthenticationService : IAuthenticationService
     {
@@ -55,7 +55,7 @@ namespace GolocAPI.Services
                 Password = register.Password
             });
         }
-        public async Task<List<UserModel>> ListUsers()
+        public List<UserModel> ListUsers()
         {
             return _unitOfWork.UserRepository.GetAll().Select(u => mapper.Map<UserModel>(u)).ToList();
 

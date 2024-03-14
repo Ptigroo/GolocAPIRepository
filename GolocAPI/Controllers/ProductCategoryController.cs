@@ -1,5 +1,5 @@
 ﻿using GolocAPI.Services;
-using GolocSharedLibrary.Models;
+using GolocAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

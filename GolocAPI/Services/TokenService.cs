@@ -20,7 +20,7 @@ namespace GolocAPI.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.Email, user.Email!),
                 new Claim(ClaimTypes.Name, user.Pseudo),
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };

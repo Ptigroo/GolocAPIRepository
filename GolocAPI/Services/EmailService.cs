@@ -1,4 +1,4 @@
-﻿using GolocSharedLibrary.Models;
+﻿using GolocAPI.Models;
 //using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 //using MimeKit;

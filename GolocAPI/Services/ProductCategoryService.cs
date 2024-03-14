@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using GolocAPI.Entities;
-using GolocSharedLibrary.Models;
+using GolocAPI.Models;
 using Infrastructure.Repositories;
 
 namespace GolocAPI.Services

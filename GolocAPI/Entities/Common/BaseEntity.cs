@@ -1,10 +1,8 @@
 ﻿
-namespace GolocAPI.Entities.Common
+namespace GolocAPI.Entities.Common;
+public class BaseEntity
 {
-    public class BaseEntity
-    {
-        public Guid Id { get; set; }
-        public DateTime CreationDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
-    }
+    public Guid Id { get; set; }
+    public DateTime CreationDate { get; set; }
+    public DateTime ModifiedDate { get; set; }
 }
