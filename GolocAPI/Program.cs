@@ -34,7 +34,7 @@ var mapperConfig = new MapperConfiguration(mc =>
 
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
-
+//todo
 //builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
