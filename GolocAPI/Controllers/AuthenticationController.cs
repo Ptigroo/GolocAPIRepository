@@ -1,59 +1,22 @@
-﻿using GolocAPI.Entities;
+﻿using GolocAPI.CommandsAndQueries.Authentication;
 using GolocAPI.Models;
 using GolocAPI.Services;
-using Microsoft.AspNetCore.Identity;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 namespace GolocAPI.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController(IMediator mediator) : ControllerBase
 {
-    private readonly IAuthenticationService _authenticationService;
-
-    public AuthenticationController(UserManager<User> manager, IAuthenticationService authenticationService)
-    {
-        _authenticationService = authenticationService;
-    }
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(LoginModel login)
+    public async Task<APIResponse<TokenModel>> Login(LoginQuery login)
     {
-        try
-        {
-            return Ok(await _authenticationService.Login(login));
-        }
-        catch (Exception e)
-        {
-            return BadRequest(new ExceptionModel() { Message = e.Message});
-        }
+        return new APIResponse<TokenModel> { Data = await mediator.Send(login) };
     }
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterModel register)
+    public async Task<APIResponse<TokenModel>> RegisterAndLogin([FromBody] RegisterCommand register)
     {
-        try
-        {
-            return Ok(await _authenticationService.Register(register));
-
-        }
-        catch (Exception e)
-        {
-            return BadRequest(new ExceptionModel() { Message = e.Message});
-        }
-            
+        await mediator.Send(register);
+        return new APIResponse<TokenModel> { Data = await mediator.Send(new LoginQuery(register.Login, register.Password)) };
     }
-    [HttpGet("list")]
-    public List<UserModel> UserList()
-    {
-        return _authenticationService.ListUsers();
-    }
-    /*[HttpPost("forgot")]
-    public async Task<ActionResult> Forgot(ForgotPasswordModel forgot)
-    {
-            await _authenticationService.Forgot(forgot);
-            return Ok();
-    }
-    [HttpGet("validate/{user}")]
-    public async Task Validate(string user)
-    {
-            await _authenticationService.Validate(user);
-    }*/
 }

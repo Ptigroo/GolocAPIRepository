@@ -3,35 +3,32 @@ using GolocAPI.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using GolocAPI.Entities;
+using MediatR;
+using GolocAPI.CommandsAndQueries.Authentication;
+using GolocAPI.CommandsAndQueries;
+using GolocAPI.Handlers;
 namespace GolocAPI.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class RentController : ControllerBase
+public class RentController(IMediator mediator) : ControllerBase
 {
-    private readonly IRentService rentService;
-    public RentController(IRentService rentService)
-    {
-        this.rentService = rentService;
-    }
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult> Add([FromBody] RentPostModel rent)
+    public async Task<APIResponse<RentModel>> Add([FromBody] AddRentCommand rent)
     {
-        string renterId = User.Identity.GetUserId();
-        await rentService.AddRent(rent, renterId);
-        return Ok(new RentModel());
+        rent.RenterId = User.Identity.GetUserId();
+        return new APIResponse<RentModel> { Data = await mediator.Send(rent) };
     }
     [HttpGet("{id}")]
-    public async Task<ActionResult<List<ChatMessageModel>>> Get(Guid id)
+    public async Task<APIResponse<List<ChatMessageModel>>> Get(Guid id)
     {
-        return Ok(await rentService.GetMessages(id));
+        return new APIResponse<List<ChatMessageModel>> { Data = await mediator.Send(new GetMessagesQuery(id)) };
     }
     [Authorize]
     [HttpGet("list")]
-    public ActionResult<List<RentModel>> GetAll()
+    public async Task<APIResponse<List<RentModel>>> GetAll()
     {
         string userId = User.Identity.GetUserId();
-        return Ok(rentService.GetAllRents(userId));
+        return new APIResponse<List<RentModel>> { Data = await mediator.Send(new GetAllRentsQuery(userId)) };
     }
 }

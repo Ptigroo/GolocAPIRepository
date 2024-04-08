@@ -1,34 +1,27 @@
-﻿using GolocAPI.Services;
-using GolocAPI.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using GolocAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using MediatR;
+using AutoMapper;
+using GolocAPI.Commands;
+using GolocAPI.Handlers;
 
 namespace GolocAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductCategoryController(IProductCategoryService productCateoryService) : ControllerBase
+    public class ProductCategoryController(IMediator mediator, IMapper mapper) : ControllerBase
     {
-        
-        //[Authorize]
+        //TODO Pass it to authorize with role admin[Authorize]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] ProductCategoryPostModel category)
+        public async Task<APIResponse<ProductCategoryModel>> Add([FromBody] AddProductCategoryCommand category)
         {
-            try
-            {
-                await productCateoryService.AddCategory(category);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            return new APIResponse<ProductCategoryModel> { Data = await mediator.Send(category) };
         }
 
         [HttpGet("list")]
-        public ActionResult<List<ProductCategoryModel>> GetAll()
+        public async Task<APIResponse<List<ProductCategoryModel>>> GetAll()
         {
-            return Ok(productCateoryService.GetAll());
+            return new APIResponse<List<ProductCategoryModel>> { Data = await mediator.Send(new GetAllProductCategoryRequest()) };
         }
     }
 }

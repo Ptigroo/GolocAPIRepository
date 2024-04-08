@@ -11,11 +11,3 @@ public class RentModel
     public double Price { get; set; }
     public List<ChatMessageModel> ChatMessages { get; set; }
 }
-public class RentPostModel
-{
-    public Guid ProductId { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public double Price { get; set; }
-    public string FirstMessage { get; set; }
-}

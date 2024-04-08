@@ -19,12 +19,3 @@ public class ProductModel
     public DateTime? StartAvailibility { get; set; }
     public DateTime? EndAvailibility { get; set; }
 }
-public class ProductPostModel
-{
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public List<string> Images { get; set; }
-    public double PricePerDay { get; set; }
-    public Guid CategoryId { get; set; }
-    public Guid OwnerId { get; set; }
-}

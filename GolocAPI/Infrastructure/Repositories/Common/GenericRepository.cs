@@ -1,12 +1,15 @@
-﻿using GolocAPI.Entities.Common;
+﻿using GolocAPI;
+using GolocAPI.Entities.Common;
+using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Repositories.Common;
 public interface IGenericRepository<T> where T : BaseEntity
 {
-    Task Create(T entity);
+    Task<T> Create(T entity);
     void Update(T entity);
     void Delete(T entity);
     Task<T> GetById(Guid id);
-    IEnumerable<T> GetAll();
+    Task<List<T>> GetAll();
+    PaginatedList<T> GetPaginated(int pageNumber, int pageSize);
 }
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
@@ -16,10 +19,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         this.golocDbContext = golocDbContext;
     }
-    public virtual async Task Create(T entity)
+    public virtual async Task<T> Create(T entity)
     {
         entity.CreationDate = DateTime.Now;
-           await golocDbContext.AddAsync(entity);
+        await golocDbContext.AddAsync(entity);
+        return entity;
     }
     public virtual void Delete(T entity)
     {
@@ -34,14 +38,17 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
         return entity;
     }
-
     public virtual void Update(T entity)
     {
         entity.ModifiedDate = DateTime.Now;
         golocDbContext.Update(entity);
     }
-    public virtual IEnumerable<T> GetAll()
+    public virtual async Task<List<T>> GetAll()
     {
-        return golocDbContext.Set<T>().AsEnumerable();
+        return await golocDbContext.Set<T>().ToListAsync();
+    }
+    public PaginatedList<T> GetPaginated(int pageNumber, int pageSize)
+    {
+        return PaginatedList<T>.ToPaginatedList(golocDbContext.Set<T>(), pageNumber, pageSize);
     }
 }

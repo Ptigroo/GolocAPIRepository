@@ -6,6 +6,7 @@ namespace GolocAPI.Infrastructure.Repositories
 {
     public interface IProductRepository : IGenericRepository<Product>
     {
+        PaginatedList<Product> GetAllPaginated(int pageNumber, int pageSize);
     }
     public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
@@ -15,14 +16,17 @@ namespace GolocAPI.Infrastructure.Repositories
         {
             this.golocDbContext = golocDbContext;
         }
-        public override IEnumerable<Product> GetAll()
+        public override async Task<List<Product>> GetAll()
         {
-            return golocDbContext.Products.Include(product => product.Owner).AsEnumerable();
+            return await golocDbContext.Products.Include(product => product.Owner).ToListAsync();
+        }
+        public PaginatedList<Product> GetAllPaginated(int pageNumber, int pageSize)
+        {
+            return PaginatedList<Product>.ToPaginatedList(golocDbContext.Products.Include(product => product.Owner), pageNumber, pageSize);
         }
         public override async Task<Product> GetById(Guid id)
         {
             return await golocDbContext.Products.Include(product => product.Owner).FirstAsync(product => product.Id == id);
         }
-
     }
 }

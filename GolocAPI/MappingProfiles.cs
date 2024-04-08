@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using GolocAPI.Commands;
+using GolocAPI.CommandsAndQueries;
+using GolocAPI.CommandsAndQueries.Authentication;
 using GolocAPI.Entities;
 using GolocAPI.Models;
 
@@ -10,9 +13,9 @@ namespace GolocAPI
         {
             CreateMap<User, UserModel>().ReverseMap();
             CreateMap<Product, ProductModel>().AfterMap((product, model)=> model.Owner = new UserModel() { Id = product.Owner.Id,}).ReverseMap();
-            CreateMap<Product, ProductPostModel>().ReverseMap();
+            CreateMap<Product, AddProductCommand>().ReverseMap();
             CreateMap<ProductCategory, ProductCategoryModel>().ReverseMap();
-            CreateMap<ProductCategory, ProductCategoryPostModel>().ReverseMap();
+            CreateMap<AddProductCategoryCommand ,ProductCategory>();
             CreateMap<Rent, RentModel>().AfterMap((rent, model) => { model.RenterName = rent.Renter.Pseudo;
                 model.ProductName = rent.Product.Name;
                 model.OwnerName = rent.Product.Owner.Pseudo;
@@ -28,7 +31,7 @@ namespace GolocAPI
 
                 }
             });
-            CreateMap<RentPostModel, Rent>();
+            CreateMap<AddRentCommand, Rent>();
             CreateMap<ChatMessageModel, ChatMessage>().ReverseMap();
         }
     }

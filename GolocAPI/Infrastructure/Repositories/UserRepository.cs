@@ -1,5 +1,5 @@
-﻿using GolocAPI.Entities;
-using GolocAPI.Models;
+﻿using GolocAPI.CommandsAndQueries.Authentication;
+using GolocAPI.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Repositories
@@ -7,7 +7,7 @@ namespace Infrastructure.Repositories
     public interface IUserRepository
     {
         Task Register(User entity, string password);
-        Task<User> Login(LoginModel login);
+        Task<User> Login(LoginQuery login);
         IEnumerable<User> GetAll();
     }
     internal class UserRepository : IUserRepository
@@ -33,7 +33,7 @@ namespace Infrastructure.Repositories
                     throw new Exception(result.Errors.First().Description);
                 }
         }
-        public async Task<User> Login(LoginModel login)
+        public async Task<User> Login(LoginQuery login)
         {
             var user = await _manager.FindByNameAsync(login.Login);
             if (user == null)

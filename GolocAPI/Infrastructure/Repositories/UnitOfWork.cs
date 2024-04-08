@@ -11,6 +11,7 @@ namespace Infrastructure.Repositories
         IProductCategoryRepository ProductCategoryRepository { get; }
         IRentRepository RentRepository { get; }
         Task Save();
+        Task Save(CancellationToken cancellationToken);
     }
     internal class UnitOfWork : IUnitOfWork
     {
@@ -35,6 +36,11 @@ namespace Infrastructure.Repositories
         {
             golocDbContext.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        public async Task Save(CancellationToken cancellationToken)
+        {
+            await golocDbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task Save()
